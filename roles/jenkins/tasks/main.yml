@@ -1,0 +1,26 @@
+# file: roles/jenkins/tasks/main.yml
+---
+- name: java install - check already exists
+  stat:
+    path: "{{ jenkins_java.dest_dir }}/{{ jenkins_java.version }}"
+  register: j_stat
+
+- name: java install - download java software
+  get_url:
+    url: "{{ g_app.base_url }}/{{ jenkins_java.src_dir }}/{{ jenkins_java.src_file }}"
+    dest: "/tmp"
+    force: yes
+    force_basic_auth: yes
+    url_username: "{{ g_app.auth_username }}"
+    url_password: "{{ g_app.auth_password }}"
+    checksum: "sha256:{{ jenkins_java.checksum }}"
+  when: not j_stat.stat.exists
+
+- name: java install - unarchive
+  unarchive:
+    src: "/tmp/{{ jenkins_java.src_file }}"
+    dest: "{{ jenkins_java.dest_dir }}"
+    copy: no
+    owner: "root"
+    group: "root"
+  when: not j_stat.stat.exists

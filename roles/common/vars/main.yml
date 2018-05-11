@@ -1,0 +1,11 @@
+# file: roles/common/vars/main.yml
+---
+common_users:
+  - name: "is01sys"
+    groups: "wheel"
+    # python -c 'import crypt; print crypt.crypt("is01sys", "$1$salt$")'
+    password: "$1$salt$aJ25t..jaL5Mx05qH039I/"
+
+common_packages:
+  - name: "vim"
+  - name: "git"

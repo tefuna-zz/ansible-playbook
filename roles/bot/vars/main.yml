@@ -1,0 +1,36 @@
+# file: roles/bot/vars/main.yml
+---
+bot_repos:
+  - name: "https://rpm.nodesource.com/pub_4.x/el/7/x86_64/nodesource-release-el7-1.noarch.rpm"
+
+bot_packages:
+  - name: "nodejs"
+  - name: "redis"
+
+bot_node_modules:
+  - name: "hubot"
+  - name: "coffee-script"
+  - name: "yo"
+  - name: "generator-hubot"
+  - name: "inherits"
+  - name: "forever"
+  - name: "node-inspector" # for test.
+
+bot_dirs:
+  - path: "/opt/hubot"
+    owner: "is01sys"
+  - path: "/opt/hubot/pid"
+    owner: "is01sys"
+  - path: "/opt/hubot/logs"
+    owner: "is01sys"
+  # - path: "/opt/hubot/globot" # globot dir.
+  #   owner: "is01sys"
+
+# bot_globot:
+#   args:
+#     name: "globot"
+#     owner: "globy@example.com"
+#     description: "this is globot."
+#     adapter: "slack"
+#   path: "/opt/hubot/globot"
+#   osowner: "is01sys"

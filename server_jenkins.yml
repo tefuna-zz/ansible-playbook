@@ -1,0 +1,8 @@
+# file: server_jenkins.yml
+---
+- hosts: jenkinsservers
+  vars_files:
+    - "env_vars/{{ stage }}.yml"
+  roles:
+    - common
+    - jenkins

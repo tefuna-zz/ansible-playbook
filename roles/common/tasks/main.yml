@@ -1,0 +1,27 @@
+# file: roles/common/tasks/main.yml
+---
+- name: create user
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups }}"
+    password: "{{ item.password }}"
+    state: present
+  with_items: "{{ common_users }}"
+  tags: users
+
+- name: install package
+  yum:
+    name: "{{ item.name }}"
+    state: latest
+  with_items: "{{ common_packages }}"
+  tags: packages
+
+- name: copy .vimrc
+  copy:
+    src: "./roles/common/files/.vimrc"
+    dest: "/home/{{ item.name }}/.vimrc"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0644
+  with_items: "{{ common_users }}"
+  become: yes

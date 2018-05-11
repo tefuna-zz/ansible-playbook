@@ -1,0 +1,60 @@
+# file: roles/bot/tasks/main.yml
+---
+- name: install repos
+  yum:
+    name: "{{ item.name }}"
+  with_items: "{{ bot_repos }}"
+  become: yes
+  tags: packages
+
+- name: install package
+  yum:
+    name: "{{ item.name }}"
+    state: latest
+  with_items: "{{ bot_packages }}"
+  become: yes
+  tags: packages
+
+- name: upgrade node_modules - npm
+  npm:
+    name: "npm"
+    global: true
+    state: latest
+  become: yes
+  tags: packages
+
+- name: install node_modules
+  npm:
+    name: "{{ item.name }}"
+    global: true
+  with_items: "{{ bot_node_modules }}"
+  become: yes
+  tags: packages
+
+- name: create hubot directory
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    recurse: true
+  with_items: "{{ bot_dirs }}"
+  become: yes
+
+# - name: create hubot
+#   command: |
+#     yo hubot
+#     --force
+#     --name="{{ bot_globot.args.name }}"
+#     --owner="{{ bot_globot.args.owner }}"
+#     --description="{{ bot_globot.args.description }}"
+#     --adapter="{{ bot_globot.args.adapter }}"
+#     --default
+#   args:
+#     chdir: "{{ bot_globot.path }}"
+#   become: yes
+#   become_user: "{{ bot_globot.osowner }}"
+
+- name: start service redis
+  service: name=redis state=started enabled=yes
+  become: yes

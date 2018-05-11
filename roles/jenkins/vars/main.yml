@@ -1,0 +1,8 @@
+# file: roles/jenkins/vars/main.yml
+---
+jenkins_java:
+  src_dir: "java"
+  src_file: "jdk-8u92-linux-x64.tar.gz"
+  checksum: "79a3f25e9b466cb9e969d1772ea38550de320c88e9119bf8aa11ce8547c39987"
+  version: "jdk1.8.0_92"
+  dest_dir: "/opt" # unarchive -> /opt/jdk1.8.0_92

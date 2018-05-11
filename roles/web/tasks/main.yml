@@ -1,0 +1,61 @@
+# file: roles/web/tasks/main.yml
+---
+- name: install repos
+  yum:
+    name: "{{ item.name }}"
+  with_items: "{{ web_repos }}"
+  become: yes
+  tags: packages
+
+- name: install package
+  yum:
+    name: "{{ item.name }}"
+    state: latest
+  with_items: "{{ web_packages }}"
+  become: yes
+  tags: packages
+
+- name: create web document root directory
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+  with_items: "{{ web_docroot }}"
+  become: yes
+
+- name: edit nginx logrotate entry - for fluentd
+  lineinfile:
+    dest: /etc/logrotate.d/nginx
+    regexp: "^ +create 640 nginx adm$"
+    line: "        create 644 nginx adm"
+  tags: nginx
+
+- name: copy ssl certification, only when stage is production.
+  copy:
+    src: "{{ web_ssl.src_dir }}"
+    dest: "{{ web_ssl.dest_dir}}"
+    mode: 0700
+  become: yes
+  when: stage == "prod"
+  tags: nginx
+
+- name: change permission ssl certification, only when stage is production.
+  file:
+    path: "{{ web_ssl.dest_dir }}/{{ item.name }}"
+    mode: 0400
+  with_items: "{{ web_ssl.certs }}"
+  become: yes
+  when: stage == "prod"
+  tags: nginx
+
+- name: update nginx config
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ web_nginx_conf }}"
+  become: yes
+  notify:
+    - restart nginx
+  tags: nginx

@@ -1,0 +1,8 @@
+# file: env_vars/prod.yml
+---
+stage: "prod"
+
+g_app:
+  base_url: "https://tefuna.tk/downloads"
+  auth_username: "is01sys"
+  auth_password: "is01sys"

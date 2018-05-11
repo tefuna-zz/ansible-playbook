@@ -1,0 +1,5 @@
+# file: site.yml
+---
+- include: server_bot.yml
+- include: server_web.yml
+- include: server_jenkins.yml

@@ -1,0 +1,13 @@
+# file: hosts_prod
+---
+[botservers]
+localhost   ansible_connection=local
+
+[webservers]
+localhost   ansible_connection=local
+
+[jenkinsservers]
+localhost   ansible_connection=local
+
+[all:vars]
+stage=prod

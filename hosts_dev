@@ -1,0 +1,10 @@
+# file: hosts_dev
+---
+[botservers]
+localhost   ansible_connection=local
+
+[webservers]
+localhost   ansible_connection=local
+
+[all:vars]
+stage=dev

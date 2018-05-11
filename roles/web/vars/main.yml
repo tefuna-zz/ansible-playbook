@@ -1,0 +1,32 @@
+# file: roles/web/vars/main.yml
+---
+web_repos:
+  - name: "http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm"
+
+web_packages:
+  - name: "nginx"
+  - name: "httpd-tools"
+
+web_docroot:
+  - path: "/var/www"
+    owner: "root"
+  - path: "/var/www/html"
+    owner: "is01sys"
+
+web_ssl:
+  src_dir: "/root/ssl"
+  dest_dir: "/etc/nginx/ssl"
+  certs:
+    - name: "server.crt"
+    - name: "server.key"
+
+web_nginx_conf:
+  - src: "./roles/web/files/{{ stage }}/nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+    mode: "0644"
+  - src: "./roles/web/files/{{ stage }}/default.conf"
+    dest: "/etc/nginx/conf.d/default.conf"
+    mode: "0644"
+  - src: "./roles/web/files/{{ stage }}/.htpasswd"
+    dest: "/etc/nginx/.htpasswd"
+    mode: "0644"

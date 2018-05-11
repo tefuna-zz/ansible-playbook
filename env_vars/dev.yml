@@ -1,0 +1,3 @@
+# file: env_vars/dev.yml
+---
+stage: "dev"

@@ -1,0 +1,8 @@
+# file: server_bot.yml
+---
+- hosts: botservers
+  vars_files:
+    - "env_vars/{{ stage }}.yml"
+  roles:
+    - common
+    - bot
